@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  get "/faq" => "pages#faq"
+
   devise_for :users
 
   resources :events
