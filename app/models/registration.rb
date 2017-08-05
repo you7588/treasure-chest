@@ -1,5 +1,7 @@
 class Registration < ApplicationRecord
 
+  validate :check_event_status, :on => :create
+
   attr_accessor :current_step
   validates_presence_of :name, :email, :cellphone, :if => :should_validate_basic_data?
   validates_presence_of :name, :email, :cellphone, :bio, :if => :should_validate_all_data?
@@ -30,6 +32,12 @@ class Registration < ApplicationRecord
 
   def generate_uuid
     self.uuid = SecureRandom.uuid
+  end
+
+  def check_event_status
+    if self.event.status == "draft"
+      errors.add(:base, "活动尚未开放报名")
+    end
   end
 
 end
